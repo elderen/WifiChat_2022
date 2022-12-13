@@ -1,24 +1,50 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { TouchableOpacity, View, StatusBar, LogBox, StyleSheet, Easing, Text } from 'react-native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Icon from 'react-native-vector-icons/SimpleLineIcons';
 
-function HomeScreen() {
+Icon.loadFont();
+
+function ChatScreen() {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Home Screen</Text>
+      <Text>Chat Screen</Text>
     </View>
   );
 }
 
-const Stack = createNativeStackNavigator();
+function ProfileScreen() {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Profile Screen</Text>
+    </View>
+  );
+}
+
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
-      </Stack.Navigator>
+      <Tab.Navigator
+        initialRouteName="Chat"
+        screenOptions={({route}) => ({
+          tabBarIcon: ({color, size}) => {
+            let iconName;
+            if (route.name == 'Watch') {
+              iconName = 'social-youtube';
+            } else if (route.name == 'Chat') {
+              iconName = 'bubbles';
+            } else if (route.name == 'Profile') {
+              iconName = 'user';
+            }
+            return <Icon name={iconName} size={size} color={color} />;
+          },
+        })}>
+        <Tab.Screen name="Chat" component={ChatScreen} />
+        <Tab.Screen name="Profile" component={ProfileScreen} />
+      </Tab.Navigator>
     </NavigationContainer>
   );
 }
